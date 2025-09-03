@@ -1,0 +1,72 @@
+#include "globals.hh"
+#include <sstream>
+
+#include "G4RunManager.hh"
+#include "G4VisExecutive.hh"
+#include "G4UImanager.hh"
+#include "G4UIExecutive.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4IonTable.hh"
+#include "G4ProcessManager.hh"
+#include "G4UIterminal.hh"
+#include "G4UItcsh.hh"
+
+#include "PhysicsList.hh"
+#include "DetectorConstruction.hh"
+#include "PrimaryGeneratorAction.hh"
+#include "RunAction.hh"
+#include "SteppingAction.hh"
+#include "EventAction.hh"
+
+#include "FTFP_INCLXX.hh"
+#include "FTFP_BERT.hh"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+
+  G4double kinEnergy = 70; // MeV unit
+
+  G4RunManager* runManager = new G4RunManager;
+  DetectorConstruction* det = new DetectorConstruction();
+  runManager -> SetUserInitialization( det );
+  //runManager -> SetUserInitialization(new MyPhysicsList());
+  //runManager -> SetUserInitialization(new FTFP_INCLXX());
+  runManager -> SetUserInitialization(new FTFP_BERT());
+  runManager -> SetUserAction(new RunAction());
+  runManager -> SetUserAction(new PrimaryGeneratorAction((G4double) kinEnergy));
+  runManager -> SetUserAction(new EventAction());
+  runManager -> SetUserAction(new SteppingAction());
+  runManager -> Initialize();
+
+
+  G4VisManager* visManager = new G4VisExecutive;
+  visManager -> Initialize();
+  G4UImanager* UImanager = G4UImanager::GetUIpointer();
+
+
+
+  if(argc > 1)
+  {
+    G4String command = "/control/execute ";
+    G4String fileName = argv[1];
+    UImanager -> ApplyCommand(command+fileName);
+  }
+  else if(argc <= 1) 
+  {
+    //G4UIExecutive* ui = new G4UIExecutive(argc, argv);
+    auto ui = new G4UIterminal(new G4UItcsh);
+    UImanager -> ApplyCommand("/control/execute vis.mac");
+    ui -> SessionStart();
+    delete ui;
+  }
+
+  delete visManager;
+  delete runManager;
+  return 0;
+}
