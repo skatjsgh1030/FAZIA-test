@@ -48,6 +48,30 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
         // 트랙이 하나만 생성 됐으니까, 지금 proton 과 생성된 secondary 하나만 저장
         G4ThreeVector protonMom = step->GetTrack()->GetMomentum();
         G4ThreeVector targetMom = secondTrack->GetMomentum();
+
+        G4double protonMass = step->GetTrack()->GetDefinition()->GetPDGMass();
+        G4double targetMass = secondTrack->GetDefinition()->GetPDGMass();
+        G4double protonKe = step->GetTrack()->GetKineticEnergy();
+        G4double targetKe = secondTrack->GetKineticEnergy();
+
+        analysisManager->FillNtupleIColumn( 0, eventID );
+        analysisManager->FillNtupleDColumn( 1, 2212 );
+        analysisManager->FillNtupleDColumn( 2, protonMom.x() );
+        analysisManager->FillNtupleDColumn( 3, protonMom.y() );
+        analysisManager->FillNtupleDColumn( 4, protonMom.z() );
+        analysisManager->FillNtupleDColumn( 5, protonMass );
+        analysisManager->FillNtupleDColumn( 6, protonKe );
+        analysisManager -> AddNtupleRow();
+
+
+        analysisManager->FillNtupleIColumn( 0, eventID );
+        analysisManager->FillNtupleDColumn( 1, secondTrack->GetDefinition()->GetPDGEncoding() );
+        analysisManager->FillNtupleDColumn( 2, targetMom.x() );
+        analysisManager->FillNtupleDColumn( 3, targetMom.y() );
+        analysisManager->FillNtupleDColumn( 4, targetMom.z() );
+        analysisManager->FillNtupleDColumn( 5, targetMass );
+        analysisManager->FillNtupleDColumn( 6, targetKe );
+        analysisManager -> AddNtupleRow();
       }
       if( processName=="protonInelastic" )
       {
@@ -56,6 +80,17 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
         {
           const G4Track* daughterTrack = secondaryTracks->at(i);
           G4ThreeVector daughterMom = daughterTrack->GetMomentum();
+          G4double daughterMass = daughterTrack->GetDefinition()->GetPDGMass();
+          G4double ke = daughterTrack->GetKineticEnergy();
+
+          analysisManager->FillNtupleIColumn( 0, eventID );
+          analysisManager->FillNtupleDColumn( 1, daughterTrack->GetDefinition()->GetPDGEncoding() );
+          analysisManager->FillNtupleDColumn( 2, daughterMom.x() );
+          analysisManager->FillNtupleDColumn( 3, daughterMom.y() );
+          analysisManager->FillNtupleDColumn( 4, daughterMom.z() );
+          analysisManager->FillNtupleDColumn( 5, daughterMass );
+          analysisManager->FillNtupleDColumn( 6, ke );
+          analysisManager -> AddNtupleRow();
         }
       }
 
