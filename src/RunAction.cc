@@ -37,6 +37,19 @@ void RunAction::BeginOfRunAction(const G4Run* )
   analysisManager->CreateNtupleDColumn("mass");
   analysisManager->CreateNtupleDColumn("ke");
   analysisManager->FinishNtuple(0);
+
+//Energy deposit정보 저장
+  analysisManager->CreateNtuple("edep_by_track", "");
+  analysisManager->CreateNtupleIColumn("eventID");          // [0]
+  analysisManager->CreateNtupleIColumn("trackID");          // [1]
+  analysisManager->CreateNtupleIColumn("pdg");              // [2]
+  analysisManager->CreateNtupleSColumn("creator_process");  // [3]
+  analysisManager->CreateNtupleDColumn("edep_Si1_total");   // [4] = logicSi1_sub + logicSi1_epi:contentReference[oaicite:3]{index=3}
+  analysisManager->CreateNtupleDColumn("edep_Si2_total");   // [5] = logicSi2_n   + logicSi2_int:contentReference[oaicite:4]{index=4}
+  analysisManager->CreateNtupleDColumn("edep_CsI_total");   // [6] = logicCsI:contentReference[oaicite:5]{index=5}
+  analysisManager->FinishNtuple(1);
+
+
 }
 
 void RunAction::EndOfRunAction(const G4Run* theRun)

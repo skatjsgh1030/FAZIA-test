@@ -34,11 +34,17 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) 
 {
-  G4ThreeVector gunPosition = G4ThreeVector(0, 0, 0);
+ 
+  const G4double beam_sigma = 0.25*cm;
+  G4double x_pos = G4RandGauss::shoot(0.0, beam_sigma);
+  G4double y_pos = G4RandGauss::shoot(0.0, beam_sigma);
+  G4double z_pos = 0.0;  // z=0 평면에서 사출      
+
+  G4ThreeVector gunPosition = G4ThreeVector(x_pos,y_pos,z_pos);
   fParticleGun -> SetParticlePosition(gunPosition);
 
   G4double x, y, z;
-
+  
   x = 0.;
   y = 0.;
   z = 1.;
