@@ -18,8 +18,13 @@ class EventAction : public G4UserEventAction
     virtual void BeginOfEventAction(const G4Event*);
     virtual void   EndOfEventAction(const G4Event*);
 
+    void SetGoldTarget( G4bool val ) { isGoldTarget = val; };
+    G4bool GetGoldTarget() { return isGoldTarget; };
+
   private:
     EventAction & operator=(const EventAction &right);
     EventAction(const EventAction&);
+
+    G4bool isGoldTarget = false;
 };
 #endif

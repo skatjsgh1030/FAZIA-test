@@ -6,6 +6,7 @@
 #include "G4Step.hh"
 #include "globals.hh"
 #include "G4AnalysisManager.hh"
+#include "EventAction.hh"
 
 using namespace CLHEP;
 
@@ -19,8 +20,9 @@ class SteppingAction : public G4UserSteppingAction
     virtual void UserSteppingAction(const G4Step*);
 
   private:
-
     G4AnalysisManager* analysisManager;
+
+    EventAction* eventAction = nullptr;
 };
 
 #endif

@@ -32,6 +32,8 @@ EventAction::~EventAction()
 void EventAction::BeginOfEventAction(const G4Event* evt)
 {
   // 필요 시 이벤트 시작 시점 초기화 로직 추가 가능 (현재는 비움)
+  // 매 이벤트 시작 때 마다 gold target event를 initialize 해준다.
+  isGoldTarget = false;
 }
 
 void EventAction::EndOfEventAction(const G4Event* evt)

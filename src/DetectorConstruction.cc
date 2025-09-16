@@ -50,7 +50,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
    
 //타겟정의
     G4Material* C = nist->FindOrBuildMaterial("G4_C"); 
-    G4Material* Au = nist->FindOrBuildMaterial("G4_Au");\
+    G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
     G4double target_size = 0.02*m;
     G4double target_Thickness = 6.*um;     
     G4Box *solidTarget = new G4Box("solidTarget",target_size/2.,target_size/2.,target_Thickness/2.);
