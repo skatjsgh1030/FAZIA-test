@@ -50,6 +50,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   z = 1.;
 
   G4double KinEnergy = fEnergy*MeV;
+  KinEnergy = G4UniformRand()*70;
 
   fParticleGun -> SetParticleMomentumDirection( G4ThreeVector(x,y,z) );
   fParticleGun -> SetParticleEnergy( KinEnergy );

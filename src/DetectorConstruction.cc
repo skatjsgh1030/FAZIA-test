@@ -58,9 +58,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   auto* solidTarget = new G4Box("solidTarget", target_size/2., target_size/2., target_Thickness/2.);
   auto* logicTarget = new G4LogicalVolume(solidTarget, Au, "logicTarget");
-  (void) new G4PVPlacement(
-      nullptr, G4ThreeVector(0.,0.,10.*cm), logicTarget,
-      "physTarget", logicWorld, false, 0, true);
+  //(void) new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,10.*cm), logicTarget, "physTarget", logicWorld, false, 0, true);
 
   auto* detVisAtt = new G4VisAttributes(G4Color(1.0, 1.0, 0.0, 0.5));
   detVisAtt->SetForceSolid(true);

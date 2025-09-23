@@ -10,14 +10,6 @@
 #include <unordered_map>
 #include "G4VProcess.hh"
 #include "G4TouchableHistory.hh" // G4TouchableHandle 사용 시 안전
-                                 // 트랙별 총 에너지 손실 누적 맵 (검출기별)
-std::unordered_map<G4int, G4double> map_trackId_to_edep_Si1_total; // Si1 = logicSi1_sub + logicSi1_epi
-std::unordered_map<G4int, G4double> map_trackId_to_edep_Si2_total; // Si2 = logicSi2_n   + logicSi2_int
-std::unordered_map<G4int, G4double> map_trackId_to_edep_CsI_total; // CsI = logicCsI
-                                                                   // 트랙 메타데이터 (한 번만 저장)
-std::unordered_map<G4int, G4int>    map_trackId_to_pdg_code;
-std::unordered_map<G4int, G4String> map_trackId_to_creator_process_name;
-// =====================================
 
 SteppingAction::SteppingAction()
   : G4UserSteppingAction()
@@ -201,27 +193,13 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       G4LogicalVolume* current_logical_volume = current_phys_volume->GetLogicalVolume();
       G4String         current_logical_name   = current_logical_volume->GetName();
 
-      // Secondary particle이 검출기에서 반응하는 경우
-      if (parentID > 0) {
-        // 트랙 메타데이터(PDG, 생성 프로세스) 최초 1회 기록
-        if (map_trackId_to_pdg_code.find(current_track_id) == map_trackId_to_pdg_code.end()) {
-          map_trackId_to_pdg_code[current_track_id] = current_pdg_code;
-          const G4VProcess* creator_process_ptr = step->GetTrack()->GetCreatorProcess();
-          G4String creator_process_name = (creator_process_ptr ? creator_process_ptr->GetProcessName() : "unknown");
-          map_trackId_to_creator_process_name[current_track_id] = creator_process_name;
-        }
-
-        // DetectorConstruction에서 정의된 논리볼륨 이름으로 판별 후 누적
-        // Si1: logicSi1_sub, logicSi1_epi / Si2: logicSi2_n, logicSi2_int / CsI: logicCsI :contentReference[oaicite:0]{index=0}
-        if (current_logical_name == "logicSi1_epi") {//if (current_logical_name == "logicSi1_sub" || current_logical_name == "logicSi1_epi") <- 복수 볼륨 사
-          map_trackId_to_edep_Si1_total[current_track_id] += energy_deposit_step;
-        } else if (current_logical_name == "logicSi2_int") {
-          map_trackId_to_edep_Si2_total[current_track_id] += energy_deposit_step;
-        } else if (current_logical_name == "logicCsI") {
-          map_trackId_to_edep_CsI_total[current_track_id] += energy_deposit_step;
-        }
-      }
-    } 
+      if (current_logical_name == "logicSi1_epi") 
+        eventAction->AccumulateEdepSi1( energy_deposit_step );
+      else if (current_logical_name == "logicSi2_int") 
+        eventAction->AccumulateEdepSi2( energy_deposit_step );
+      else if (current_logical_name == "logicCsI") 
+        eventAction->AccumulateEdepCsI( energy_deposit_step );
+    }
     // =================================================================
   }
 
