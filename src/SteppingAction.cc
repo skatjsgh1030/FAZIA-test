@@ -180,7 +180,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
 
 
-  if( eventAction->GetGoldTarget() ) // 만약 gold target event 만 저장하고 싶다면
+  //if( eventAction->GetGoldTarget() ) // 만약 gold target event 만 저장하고 싶다면
   //if( !eventAction->GetGoldTarget() ) // 만약 gold target event 가 아닌 것들만 저장하고 싶다면
   {
     // =====각 트랙이 각 검출기에서 잃은 에너지 누적 추가=====
