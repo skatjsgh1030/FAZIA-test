@@ -47,9 +47,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4Material* worldMat = nist->FindOrBuildMaterial("G4_Galactic");
   auto* solidWorld = new G4Box("solidWorld", 3*m, 3*m, 3*m);
   auto* logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
-  auto* physWorld  = new G4PVPlacement(
-      nullptr, G4ThreeVector(0.,0.,0.), logicWorld,
-      "phyWorld", nullptr, false, 0, true);
+  auto* physWorld  = new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,0.), logicWorld, "phyWorld", nullptr, false, 0, true); // Copy number of 0 for World
 
   // ========================= Target ========================
   G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
@@ -58,7 +56,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   auto* solidTarget = new G4Box("solidTarget", target_size/2., target_size/2., target_Thickness/2.);
   auto* logicTarget = new G4LogicalVolume(solidTarget, Au, "logicTarget");
-  //(void) new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,10.*cm), logicTarget, "physTarget", logicWorld, false, 0, true);
+  (void) new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,10.*cm), logicTarget, "physTarget", logicWorld, false, 1, true); // Copy number of 1 for Target
 
   auto* detVisAtt = new G4VisAttributes(G4Color(1.0, 1.0, 0.0, 0.5));
   detVisAtt->SetForceSolid(true);

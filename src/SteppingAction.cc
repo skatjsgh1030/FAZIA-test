@@ -11,9 +11,10 @@
 #include "G4VProcess.hh"
 #include "G4TouchableHistory.hh" // G4TouchableHandle 사용 시 안전
 
-SteppingAction::SteppingAction()
+SteppingAction::SteppingAction( G4bool bSaveKinematics )
   : G4UserSteppingAction()
 {
+  fSaveKinematics = bSaveKinematics;
 }
 
 SteppingAction::~SteppingAction()
@@ -35,6 +36,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   G4int parentID = step -> GetTrack() -> GetParentID();
   G4int pdg = step -> GetTrack() -> GetDefinition() -> GetPDGEncoding();
   G4double edep = step -> GetTotalEnergyDeposit();
+
+  G4ThreeVector mom = step->GetTrack()->GetMomentum();
 
 
 
@@ -71,28 +74,31 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
         G4double protonKe = step->GetTrack()->GetKineticEnergy();
         G4double targetKe = secondTrack->GetKineticEnergy();
 
-        analysisManager->FillNtupleIColumn( 0, eventID );
-        analysisManager->FillNtupleIColumn( 1, targetZ );
-        analysisManager->FillNtupleIColumn( 2, targetA );
-        analysisManager->FillNtupleDColumn( 3, 2212 );
-        analysisManager->FillNtupleDColumn( 4, protonMom.x() );
-        analysisManager->FillNtupleDColumn( 5, protonMom.y() );
-        analysisManager->FillNtupleDColumn( 6, protonMom.z() );
-        analysisManager->FillNtupleDColumn( 7, protonMass );
-        analysisManager->FillNtupleDColumn( 8, protonKe );
-        analysisManager -> AddNtupleRow();
+        if( fSaveKinematics )
+        {
+          analysisManager->FillNtupleIColumn( 0, eventID );
+          analysisManager->FillNtupleIColumn( 1, targetZ );
+          analysisManager->FillNtupleIColumn( 2, targetA );
+          analysisManager->FillNtupleDColumn( 3, 2212 );
+          analysisManager->FillNtupleDColumn( 4, protonMom.x() );
+          analysisManager->FillNtupleDColumn( 5, protonMom.y() );
+          analysisManager->FillNtupleDColumn( 6, protonMom.z() );
+          analysisManager->FillNtupleDColumn( 7, protonMass );
+          analysisManager->FillNtupleDColumn( 8, protonKe );
+          analysisManager -> AddNtupleRow();
 
 
-        analysisManager->FillNtupleIColumn( 0, eventID );
-        analysisManager->FillNtupleIColumn( 1, targetZ );
-        analysisManager->FillNtupleIColumn( 2, targetA );
-        analysisManager->FillNtupleDColumn( 3, secondTrack->GetDefinition()->GetPDGEncoding() );
-        analysisManager->FillNtupleDColumn( 4, targetMom.x() );
-        analysisManager->FillNtupleDColumn( 5, targetMom.y() );
-        analysisManager->FillNtupleDColumn( 6, targetMom.z() );
-        analysisManager->FillNtupleDColumn( 7, targetMass );
-        analysisManager->FillNtupleDColumn( 8, targetKe );
-        analysisManager -> AddNtupleRow();
+          analysisManager->FillNtupleIColumn( 0, eventID );
+          analysisManager->FillNtupleIColumn( 1, targetZ );
+          analysisManager->FillNtupleIColumn( 2, targetA );
+          analysisManager->FillNtupleDColumn( 3, secondTrack->GetDefinition()->GetPDGEncoding() );
+          analysisManager->FillNtupleDColumn( 4, targetMom.x() );
+          analysisManager->FillNtupleDColumn( 5, targetMom.y() );
+          analysisManager->FillNtupleDColumn( 6, targetMom.z() );
+          analysisManager->FillNtupleDColumn( 7, targetMass );
+          analysisManager->FillNtupleDColumn( 8, targetKe );
+          analysisManager -> AddNtupleRow();
+        }
 
         if( targetZ==79 && targetA==197 ) localGoldTarget = true;
       }
@@ -115,46 +121,28 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
         if( targetZ==79 && targetA==197 ) localGoldTarget = true;
 
-        // secondary 나오는 트랙들의 정보 저장
-        for( G4int i=0; i<numOfSecondary; i++ )
+        if( fSaveKinematics )
         {
-          const G4Track* daughterTrack = secondaryTracks->at(i);
-          G4ThreeVector daughterMom = daughterTrack->GetMomentum();
-          G4double daughterMass = daughterTrack->GetDefinition()->GetPDGMass();
-          G4double ke = daughterTrack->GetKineticEnergy();
-          //G4int daughterPDG = daughterTrack ->GetDefinition()->GetPDGEncoding(); 
-          //G4cout << daughterPDG << G4endl;
-          analysisManager->FillNtupleIColumn( 0, eventID );
-          analysisManager->FillNtupleIColumn( 1, targetZ );
-          analysisManager->FillNtupleIColumn( 2, targetA );
-          analysisManager->FillNtupleDColumn( 3, daughterTrack->GetDefinition()->GetPDGEncoding() );
-          analysisManager->FillNtupleDColumn( 4, daughterMom.x() );
-          analysisManager->FillNtupleDColumn( 5, daughterMom.y() );
-          analysisManager->FillNtupleDColumn( 6, daughterMom.z() );
-          analysisManager->FillNtupleDColumn( 7, daughterMass );
-          analysisManager->FillNtupleDColumn( 8, ke );
-          analysisManager -> AddNtupleRow();
-        }
-      }
-      if( 0 && processName=="CoulombScat" )
-      {
-        // secondary 나오는 트랙들의 정보 저장
-        for( G4int i=0; i<numOfSecondary; i++ )
-        {
-          const G4Track* daughterTrack = secondaryTracks->at(i);
-          G4ThreeVector daughterMom = daughterTrack->GetMomentum();
-          G4double daughterMass = daughterTrack->GetDefinition()->GetPDGMass();
-          G4double ke = daughterTrack->GetKineticEnergy();
-          //G4int daughterPDG = daughterTrack ->GetDefinition()->GetPDGEncoding(); 
-          //G4cout << daughterPDG << G4endl;
-          analysisManager->FillNtupleIColumn( 0, eventID );
-          analysisManager->FillNtupleDColumn( 1, daughterTrack->GetDefinition()->GetPDGEncoding() );
-          analysisManager->FillNtupleDColumn( 2, daughterMom.x() );
-          analysisManager->FillNtupleDColumn( 3, daughterMom.y() );
-          analysisManager->FillNtupleDColumn( 4, daughterMom.z() );
-          analysisManager->FillNtupleDColumn( 5, daughterMass );
-          analysisManager->FillNtupleDColumn( 6, ke );
-          analysisManager -> AddNtupleRow();
+          // secondary 나오는 트랙들의 정보 저장
+          for( G4int i=0; i<numOfSecondary; i++ )
+          {
+            const G4Track* daughterTrack = secondaryTracks->at(i);
+            G4ThreeVector daughterMom = daughterTrack->GetMomentum();
+            G4double daughterMass = daughterTrack->GetDefinition()->GetPDGMass();
+            G4double ke = daughterTrack->GetKineticEnergy();
+            //G4int daughterPDG = daughterTrack ->GetDefinition()->GetPDGEncoding(); 
+            //G4cout << daughterPDG << G4endl;
+            analysisManager->FillNtupleIColumn( 0, eventID );
+            analysisManager->FillNtupleIColumn( 1, targetZ );
+            analysisManager->FillNtupleIColumn( 2, targetA );
+            analysisManager->FillNtupleDColumn( 3, daughterTrack->GetDefinition()->GetPDGEncoding() );
+            analysisManager->FillNtupleDColumn( 4, daughterMom.x() );
+            analysisManager->FillNtupleDColumn( 5, daughterMom.y() );
+            analysisManager->FillNtupleDColumn( 6, daughterMom.z() );
+            analysisManager->FillNtupleDColumn( 7, daughterMass );
+            analysisManager->FillNtupleDColumn( 8, ke );
+            analysisManager -> AddNtupleRow();
+          }
         }
       }
 
@@ -187,18 +175,32 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     G4VPhysicalVolume* current_phys_volume = touchable_handle->GetVolume();  // null 가능
     if (current_phys_volume == 0 || energy_deposit_step <= 0.0) return;
 
+    G4int copyNum = step->GetTrack()->GetVolume()->GetCopyNo();
+    if( copyNum==0 || copyNum==1 ) return; // If trajectory deposits in world or target, we return this UserSteppingAction
+
+    G4int telNum = (copyNum - 1000) / 100; // This should be 0~15
+    G4int detNum = copyNum % 10;
 
 
     if (current_phys_volume != 0 && energy_deposit_step > 0.0) {
       G4LogicalVolume* current_logical_volume = current_phys_volume->GetLogicalVolume();
       G4String         current_logical_name   = current_logical_volume->GetName();
 
-      if (current_logical_name == "logicSi1_epi") 
-        eventAction->AccumulateEdepSi1( energy_deposit_step );
-      else if (current_logical_name == "logicSi2_int") 
-        eventAction->AccumulateEdepSi2( energy_deposit_step );
-      else if (current_logical_name == "logicCsI") 
-        eventAction->AccumulateEdepCsI( energy_deposit_step );
+      /*
+         if (current_logical_name == "logicSi1_epi") 
+         eventAction->AccumulateEdepSi1( energy_deposit_step );
+         else if (current_logical_name == "logicSi2_int") 
+         eventAction->AccumulateEdepSi2( energy_deposit_step );
+         else if (current_logical_name == "logicCsI") 
+         eventAction->AccumulateEdepCsI( energy_deposit_step );
+       */
+
+      if (detNum == 3) // If the detector is epi
+        eventAction->AccumulateEdepSi1( telNum, energy_deposit_step );
+      else if (detNum == 6) // If the detector is int
+        eventAction->AccumulateEdepSi2( telNum, energy_deposit_step );
+      else if (detNum == 7)// If the detector is CsI
+        eventAction->AccumulateEdepCsI( telNum, energy_deposit_step );
     }
     // =================================================================
   }

@@ -22,9 +22,9 @@ class EventAction : public G4UserEventAction
     G4bool GetGoldTarget() { return isGoldTarget; };
 
 
-    void AccumulateEdepSi1( G4double val ) { edepSi1 += val; };
-    void AccumulateEdepSi2( G4double val ) { edepSi2 += val; };
-    void AccumulateEdepCsI( G4double val ) { edepCsI += val; };
+    void AccumulateEdepSi1( G4int det, G4double val ) { edepSi1[det] += val; };
+    void AccumulateEdepSi2( G4int det, G4double val ) { edepSi2[det] += val; };
+    void AccumulateEdepCsI( G4int det, G4double val ) { edepCsI[det] += val; };
 
   private:
     EventAction & operator=(const EventAction &right);
@@ -32,8 +32,8 @@ class EventAction : public G4UserEventAction
 
     G4bool isGoldTarget = false;
 
-    G4double edepSi1 = 0;
-    G4double edepSi2 = 0;
-    G4double edepCsI = 0;
+    G4double edepSi1[16] = {0};
+    G4double edepSi2[16] = {0};
+    G4double edepCsI[16] = {0};
 };
 #endif

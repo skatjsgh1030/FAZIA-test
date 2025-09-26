@@ -6,7 +6,7 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
-RunAction::RunAction()
+RunAction::RunAction( G4bool bSaveKinematics )
   :G4UserRunAction()
 {
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -17,6 +17,8 @@ RunAction::RunAction()
 
   analysisManager->SetVerboseLevel(1);
   analysisManager->SetFirstHistoId(0); // default is 0
+
+  fSaveKinematics = bSaveKinematics;
 }
 
 RunAction::~RunAction()
@@ -28,7 +30,9 @@ void RunAction::BeginOfRunAction(const G4Run* )
 {
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  analysisManager->CreateNtuple("event", "");
+  analysisManager->CreateNtuple("event_kine", "");
+  if( fSaveKinematics )
+  {
   analysisManager->CreateNtupleIColumn("eventID");
   analysisManager->CreateNtupleIColumn("targetZ");
   analysisManager->CreateNtupleIColumn("targetA");
@@ -38,14 +42,19 @@ void RunAction::BeginOfRunAction(const G4Run* )
   analysisManager->CreateNtupleDColumn("pz");
   analysisManager->CreateNtupleDColumn("mass");
   analysisManager->CreateNtupleDColumn("ke");
+  }
   analysisManager->FinishNtuple(0);
 
-//Energy deposit정보 저장
-  analysisManager->CreateNtuple("edep_by_track", "");
-  analysisManager->CreateNtupleIColumn("eventID");          // [0]
-  analysisManager->CreateNtupleDColumn("edep_Si1_total");   // [4] = logicSi1_sub + logicSi1_epi:contentReference[oaicite:3]{index=3}
-  analysisManager->CreateNtupleDColumn("edep_Si2_total");   // [5] = logicSi2_n   + logicSi2_int:contentReference[oaicite:4]{index=4}
-  analysisManager->CreateNtupleDColumn("edep_CsI_total");   // [6] = logicCsI:contentReference[oaicite:5]{index=5}
+  //Energy deposit정보 저장
+  analysisManager->CreateNtuple("event_edep", "");
+  analysisManager->CreateNtupleIColumn("eventID");
+  for( G4int i=0; i<16; i++ )
+  {
+    G4String telNum = G4UIcommand::ConvertToString(i);
+    analysisManager->CreateNtupleDColumn("edep_Si1_"+telNum);
+    analysisManager->CreateNtupleDColumn("edep_Si2_"+telNum);
+    analysisManager->CreateNtupleDColumn("edep_CsI_"+telNum);
+  }
   analysisManager->FinishNtuple(1);
 
 

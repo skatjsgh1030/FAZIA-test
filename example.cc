@@ -30,6 +30,7 @@ using namespace std;
 int main(int argc, char** argv)
 {
 
+  G4bool bSaveKinematics = 1; // 0: Don't save kinemaitcs, 1: Save
   G4double kinEnergy = 70; // MeV unit
 
   G4RunManager* runManager = new G4RunManager;
@@ -38,10 +39,10 @@ int main(int argc, char** argv)
   //runManager -> SetUserInitialization(new MyPhysicsList());
   //runManager -> SetUserInitialization(new FTFP_INCLXX());
   runManager -> SetUserInitialization(new FTFP_BERT());
-  runManager -> SetUserAction(new RunAction());
+  runManager -> SetUserAction(new RunAction(bSaveKinematics));
   runManager -> SetUserAction(new PrimaryGeneratorAction((G4double) kinEnergy));
   runManager -> SetUserAction(new EventAction());
-  runManager -> SetUserAction(new SteppingAction());
+  runManager -> SetUserAction(new SteppingAction(bSaveKinematics));
   runManager -> Initialize();
 
 

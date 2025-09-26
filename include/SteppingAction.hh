@@ -13,7 +13,7 @@ using namespace CLHEP;
 class SteppingAction : public G4UserSteppingAction
 {
   public:
-    SteppingAction();
+    SteppingAction( G4bool bSaveKinematics );
     virtual ~SteppingAction();
 
     // method from the base class
@@ -23,6 +23,8 @@ class SteppingAction : public G4UserSteppingAction
     G4AnalysisManager* analysisManager;
 
     EventAction* eventAction = nullptr;
+
+    G4bool fSaveKinematics = true;
 };
 
 #endif

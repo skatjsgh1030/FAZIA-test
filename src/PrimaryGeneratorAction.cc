@@ -39,6 +39,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double x_pos = G4RandGauss::shoot(0.0, beam_sigma);
   G4double y_pos = G4RandGauss::shoot(0.0, beam_sigma);
   G4double z_pos = 0.0;  // z=0 평면에서 사출      
+  x_pos = 0; y_pos = 0; z_pos = 0;
 
   G4ThreeVector gunPosition = G4ThreeVector(x_pos,y_pos,z_pos);
   fParticleGun -> SetParticlePosition(gunPosition);
@@ -48,9 +49,10 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   x = 0.;
   y = 0.;
   z = 1.;
+  //x = 4*cm*(1. - 2.*G4UniformRand()); y = 4*cm*(1. - 2.*G4UniformRand()); z = 1*m;
 
   G4double KinEnergy = fEnergy*MeV;
-  KinEnergy = G4UniformRand()*70;
+  //KinEnergy = G4UniformRand()*70;
 
   fParticleGun -> SetParticleMomentumDirection( G4ThreeVector(x,y,z) );
   fParticleGun -> SetParticleEnergy( KinEnergy );

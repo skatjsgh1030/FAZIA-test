@@ -26,9 +26,12 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
   // 매 이벤트 시작 때 마다 gold target event를 initialize 해준다.
   isGoldTarget = false;
 
-  edepSi1 = 0;
-  edepSi2 = 0;
-  edepCsI = 0;
+  for( G4int i=0; i<16; i++ )
+  {
+  edepSi1[i] = 0;
+  edepSi2[i] = 0;
+  edepCsI[i] = 0;
+  }
 }
 
 void EventAction::EndOfEventAction(const G4Event* evt)
@@ -39,9 +42,15 @@ void EventAction::EndOfEventAction(const G4Event* evt)
 
 
   analysisManager->FillNtupleIColumn(1, 0, eventID);
-  analysisManager->FillNtupleDColumn(1, 1, edepSi1);
-  analysisManager->FillNtupleDColumn(1, 2, edepSi2);
-  analysisManager->FillNtupleDColumn(1, 3, edepCsI);
+  for( G4int i=0; i<16; i++ )
+  {
+    int idxSi1 = 3*i + 1;
+    int idxSi2 = 3*i + 2;
+    int idxCsI = 3*i + 3;
+    analysisManager->FillNtupleDColumn(1, idxSi1, edepSi1[i]);
+    analysisManager->FillNtupleDColumn(1, idxSi2, edepSi2[i]);
+    analysisManager->FillNtupleDColumn(1, idxCsI, edepCsI[i]);
+  }
   analysisManager->AddNtupleRow(1);
 }
 

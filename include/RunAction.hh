@@ -10,7 +10,7 @@
 class RunAction : public G4UserRunAction
 {
   public:
-    RunAction();
+    RunAction( G4bool bSaveKinematics );
     virtual ~RunAction();
 
     // method from the base class
@@ -18,6 +18,7 @@ class RunAction : public G4UserRunAction
     virtual void EndOfRunAction(const G4Run*);
 
     private:
+    G4bool fSaveKinematics = true;
 };
 
 #endif
