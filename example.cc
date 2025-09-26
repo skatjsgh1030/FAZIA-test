@@ -32,7 +32,12 @@ int main(int argc, char** argv)
   G4bool bSaveKinematics = 1; // 0: Don't save kinemaitcs, 1: Save
   G4double kinEnergy = 70; // MeV unit
 
+  G4int ranSeed = strtod(argv[1], NULL);
+  long seed = time(0)*gethostid() * ranSeed;
+  CLHEP::HepRandom::setTheSeed( seed );
+
   G4String fileNumber = argv[1];
+
 
   G4RunManager* runManager = new G4RunManager;
   DetectorConstruction* det = new DetectorConstruction();
