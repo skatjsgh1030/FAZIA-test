@@ -74,7 +74,9 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
         G4double protonKe = step->GetTrack()->GetKineticEnergy();
         G4double targetKe = secondTrack->GetKineticEnergy();
 
-        if( fSaveKinematics )
+        if( targetZ==79 && targetA==197 ) localGoldTarget = true;
+
+        if( fSaveKinematics && localGoldTarget )
         {
           analysisManager->FillNtupleIColumn( 0, eventID );
           analysisManager->FillNtupleIColumn( 1, targetZ );
@@ -99,8 +101,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           analysisManager->FillNtupleDColumn( 8, targetKe );
           analysisManager -> AddNtupleRow();
         }
-
-        if( targetZ==79 && targetA==197 ) localGoldTarget = true;
       }
 
       if( processName=="protonInelastic" )
@@ -121,7 +121,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
         if( targetZ==79 && targetA==197 ) localGoldTarget = true;
 
-        if( fSaveKinematics )
+        if( fSaveKinematics && localGoldTarget )
         {
           // secondary 나오는 트랙들의 정보 저장
           for( G4int i=0; i<numOfSecondary; i++ )

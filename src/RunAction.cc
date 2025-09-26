@@ -6,13 +6,13 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
-RunAction::RunAction( G4bool bSaveKinematics )
+RunAction::RunAction( G4String fileN, G4bool bSaveKinematics )
   :G4UserRunAction()
 {
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // Open an output file
-  G4String fileName = "output.root";
+  G4String fileName = "output_" + fileN + ".root";
   analysisManager->OpenFile(fileName);
 
   analysisManager->SetVerboseLevel(1);

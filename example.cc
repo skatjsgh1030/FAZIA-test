@@ -29,9 +29,10 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-
   G4bool bSaveKinematics = 1; // 0: Don't save kinemaitcs, 1: Save
   G4double kinEnergy = 70; // MeV unit
+
+  G4String fileNumber = argv[1];
 
   G4RunManager* runManager = new G4RunManager;
   DetectorConstruction* det = new DetectorConstruction();
@@ -39,7 +40,7 @@ int main(int argc, char** argv)
   //runManager -> SetUserInitialization(new MyPhysicsList());
   //runManager -> SetUserInitialization(new FTFP_INCLXX());
   runManager -> SetUserInitialization(new FTFP_BERT());
-  runManager -> SetUserAction(new RunAction(bSaveKinematics));
+  runManager -> SetUserAction(new RunAction(fileNumber, bSaveKinematics));
   runManager -> SetUserAction(new PrimaryGeneratorAction((G4double) kinEnergy));
   runManager -> SetUserAction(new EventAction());
   runManager -> SetUserAction(new SteppingAction(bSaveKinematics));
@@ -52,13 +53,13 @@ int main(int argc, char** argv)
 
 
 
-  if(argc > 1)
+  if(argc > 2)
   {
     G4String command = "/control/execute ";
-    G4String fileName = argv[1];
+    G4String fileName = argv[2];
     UImanager -> ApplyCommand(command+fileName);
   }
-  else if(argc <= 1) 
+  else if(argc <= 2)
   {
     //G4UIExecutive* ui = new G4UIExecutive(argc, argv);
     auto ui = new G4UIterminal(new G4UItcsh);
