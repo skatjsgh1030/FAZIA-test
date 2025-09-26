@@ -36,7 +36,7 @@ void RunAction::BeginOfRunAction(const G4Run* )
   analysisManager->CreateNtupleIColumn("eventID");
   analysisManager->CreateNtupleIColumn("targetZ");
   analysisManager->CreateNtupleIColumn("targetA");
-  analysisManager->CreateNtupleDColumn("pid");
+  analysisManager->CreateNtupleIColumn("pid");
   analysisManager->CreateNtupleDColumn("px");
   analysisManager->CreateNtupleDColumn("py");
   analysisManager->CreateNtupleDColumn("pz");

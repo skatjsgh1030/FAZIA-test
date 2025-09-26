@@ -81,7 +81,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           analysisManager->FillNtupleIColumn( 0, eventID );
           analysisManager->FillNtupleIColumn( 1, targetZ );
           analysisManager->FillNtupleIColumn( 2, targetA );
-          analysisManager->FillNtupleDColumn( 3, 2212 );
+          analysisManager->FillNtupleIColumn( 3, 2212 );
           analysisManager->FillNtupleDColumn( 4, protonMom.x() );
           analysisManager->FillNtupleDColumn( 5, protonMom.y() );
           analysisManager->FillNtupleDColumn( 6, protonMom.z() );
@@ -93,7 +93,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           analysisManager->FillNtupleIColumn( 0, eventID );
           analysisManager->FillNtupleIColumn( 1, targetZ );
           analysisManager->FillNtupleIColumn( 2, targetA );
-          analysisManager->FillNtupleDColumn( 3, secondTrack->GetDefinition()->GetPDGEncoding() );
+          analysisManager->FillNtupleIColumn( 3, secondTrack->GetDefinition()->GetPDGEncoding() );
           analysisManager->FillNtupleDColumn( 4, targetMom.x() );
           analysisManager->FillNtupleDColumn( 5, targetMom.y() );
           analysisManager->FillNtupleDColumn( 6, targetMom.z() );
@@ -135,7 +135,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
             analysisManager->FillNtupleIColumn( 0, eventID );
             analysisManager->FillNtupleIColumn( 1, targetZ );
             analysisManager->FillNtupleIColumn( 2, targetA );
-            analysisManager->FillNtupleDColumn( 3, daughterTrack->GetDefinition()->GetPDGEncoding() );
+            analysisManager->FillNtupleIColumn( 3, daughterTrack->GetDefinition()->GetPDGEncoding() );
             analysisManager->FillNtupleDColumn( 4, daughterMom.x() );
             analysisManager->FillNtupleDColumn( 5, daughterMom.y() );
             analysisManager->FillNtupleDColumn( 6, daughterMom.z() );
