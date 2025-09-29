@@ -33,15 +33,16 @@ void RunAction::BeginOfRunAction(const G4Run* )
   analysisManager->CreateNtuple("event_kine", "");
   if( fSaveKinematics )
   {
-  analysisManager->CreateNtupleIColumn("eventID");
-  analysisManager->CreateNtupleIColumn("targetZ");
-  analysisManager->CreateNtupleIColumn("targetA");
-  analysisManager->CreateNtupleIColumn("pid");
-  analysisManager->CreateNtupleDColumn("px");
-  analysisManager->CreateNtupleDColumn("py");
-  analysisManager->CreateNtupleDColumn("pz");
-  analysisManager->CreateNtupleDColumn("mass");
-  analysisManager->CreateNtupleDColumn("ke");
+    analysisManager->CreateNtupleIColumn("eventID");
+    analysisManager->CreateNtupleIColumn("targetZ");
+    analysisManager->CreateNtupleIColumn("targetA");
+    analysisManager->CreateNtupleIColumn("pid");
+    analysisManager->CreateNtupleDColumn("px");
+    analysisManager->CreateNtupleDColumn("py");
+    analysisManager->CreateNtupleDColumn("pz");
+    analysisManager->CreateNtupleDColumn("mass");
+    analysisManager->CreateNtupleDColumn("ke");
+    analysisManager->CreateNtupleIColumn("fInelastic");
   }
   analysisManager->FinishNtuple(0);
 

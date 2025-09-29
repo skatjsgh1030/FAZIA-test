@@ -28,9 +28,9 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 
   for( G4int i=0; i<16; i++ )
   {
-  edepSi1[i] = 0;
-  edepSi2[i] = 0;
-  edepCsI[i] = 0;
+    edepSi1[i] = 0;
+    edepSi2[i] = 0;
+    edepCsI[i] = 0;
   }
 }
 
@@ -39,6 +39,16 @@ void EventAction::EndOfEventAction(const G4Event* evt)
   // 이벤트 종료 시: 각 트랙이 각 검출기에서 잃은 총합을 한 줄로 기록
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   G4int eventID = evt->GetEventID();
+
+
+  G4int nFired = 0;
+  for( G4int i=0; i<16; i++ )
+  {
+    if( edepSi1[i] ) nFired++;
+    if( edepSi2[i] ) nFired++;
+    if( edepCsI[i] ) nFired++;
+  }
+  if( nFired==0 ) return;
 
 
   analysisManager->FillNtupleIColumn(1, 0, eventID);
@@ -53,4 +63,3 @@ void EventAction::EndOfEventAction(const G4Event* evt)
   }
   analysisManager->AddNtupleRow(1);
 }
-
