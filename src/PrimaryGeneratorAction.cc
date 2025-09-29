@@ -39,7 +39,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double x_pos = G4RandGauss::shoot(0.0, beam_sigma);
   G4double y_pos = G4RandGauss::shoot(0.0, beam_sigma);
   G4double z_pos = 0.0;  // z=0 평면에서 사출      
-  x_pos = 0; y_pos = 0; z_pos = 0;
+  x_pos = 0; y_pos = 0; z_pos = -10*cm;
 
   G4ThreeVector gunPosition = G4ThreeVector(x_pos,y_pos,z_pos);
   fParticleGun -> SetParticlePosition(gunPosition);
