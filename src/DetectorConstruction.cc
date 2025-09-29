@@ -33,9 +33,11 @@
 
 using namespace CLHEP;
 
-DetectorConstruction::DetectorConstruction()
+DetectorConstruction::DetectorConstruction( G4double rotDeg )
   : G4VUserDetectorConstruction()
-{}
+{
+  fRotDeg = rotDeg;
+}
 
 DetectorConstruction::~DetectorConstruction() {}
 
@@ -210,14 +212,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   }
 
   // ========================= Place the Block into World =========================
-  // 블록 전체를 y축 +40° 회전 & 블록 "앞면 중심(=블록 로컬 원점)"을 (1m*sin40°, 0, 1m*cos40°) 로 이동
+  // 블록 전체를 y축 +fRotDeg 회전 & 블록 "앞면 중심(=블록 로컬 원점)"을 (1m*sinfRotDeg, 0, 1m*cosfRotDeg) 로 이동
   G4RotationMatrix rotBlock;
-  //rotBlock.rotateY(40.*deg);
+  rotBlock.rotateY(fRotDeg*deg);
 
- // G4ThreeVector blockCenter( 1.*m * std::sin(40.*deg),
- //                            0.,
- //                            1.*m * std::cos(40.*deg) );
-   G4ThreeVector blockCenter(0., 0., 1.*m); 
+  G4ThreeVector blockCenter( 1.*m * std::sin(fRotDeg*deg),
+                             0.,
+                             1.*m * std::cos(fRotDeg*deg) );
   const G4int  baseCopyNoBlock = 1000;  
   const G4bool checkOverlap    = true;
 

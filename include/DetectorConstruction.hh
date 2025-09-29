@@ -25,13 +25,15 @@ class G4LogicalVolume;
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    DetectorConstruction();
+    DetectorConstruction( G4double rotDeg );
     virtual ~DetectorConstruction();
 
     virtual G4VPhysicalVolume* Construct();
 
   private:
     G4LogicalVolume *logicDetector;
+
+    G4double fRotDeg = 0;
     	
 };
 
