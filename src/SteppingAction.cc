@@ -87,6 +87,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           analysisManager->FillNtupleDColumn( 6, protonMom.z() );
           analysisManager->FillNtupleDColumn( 7, protonMass );
           analysisManager->FillNtupleDColumn( 8, protonKe );
+          analysisManager->FillNtupleIColumn( 9, 0 );
           analysisManager -> AddNtupleRow();
 
 
@@ -99,6 +100,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           analysisManager->FillNtupleDColumn( 6, targetMom.z() );
           analysisManager->FillNtupleDColumn( 7, targetMass );
           analysisManager->FillNtupleDColumn( 8, targetKe );
+          analysisManager->FillNtupleIColumn( 9, 0 );
           analysisManager -> AddNtupleRow();
         }
       }
@@ -141,6 +143,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
             analysisManager->FillNtupleDColumn( 6, daughterMom.z() );
             analysisManager->FillNtupleDColumn( 7, daughterMass );
             analysisManager->FillNtupleDColumn( 8, ke );
+            analysisManager->FillNtupleIColumn( 9, 1 );
             analysisManager -> AddNtupleRow();
           }
         }
