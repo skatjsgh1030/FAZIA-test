@@ -1,2 +1,3 @@
 /run/setCutForAGivenParticle e- 1 m
+/run/setCutForRegion detectorRegion 0.7 mm
 /run/beamOn 10000000

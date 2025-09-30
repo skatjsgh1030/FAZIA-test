@@ -122,6 +122,26 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   auto* solid_CsI = new G4Box("solid_CsI", CsISize/2, CsISize/2, CsIThickness/2);
   auto* logicCsI  = new G4LogicalVolume(solid_CsI, CsI_mat, "logicCsI");
 
+
+  G4Region* detRegion = new G4Region("detectorRegion");
+  logicSi1_al->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicSi1_al);
+  logicSi1_sub->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicSi1_sub);
+  logicSi1_epi->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicSi1_epi);
+
+  logicSi2_al->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicSi2_al);
+  logicSi2_n->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicSi2_n);
+  logicSi2_int->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicSi2_int);
+
+  logicCsI->SetRegion(detRegion);
+  detRegion->AddRootLogicalVolume(logicCsI);
+
+
   // ========================= Telescope Assembly (Si1+Si2+CsI) =========================
   // 로컬 원점 z=0 을 "Si1 앞면"으로 두고, zacc로 뒤로 쌓아 올림
   G4AssemblyVolume* assemblyTelescope = new G4AssemblyVolume();

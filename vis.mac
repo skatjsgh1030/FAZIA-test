@@ -36,3 +36,6 @@
 #/vis/viewer/zoom 8
 
 /vis/verbose warnings
+
+/run/setCutForAGivenParticle e- 1 m
+/run/setCutForRegion detectorRegion 0.7 mm
