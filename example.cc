@@ -11,7 +11,6 @@
 #include "G4UIterminal.hh"
 #include "G4UItcsh.hh"
 
-#include "PhysicsList.hh"
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
@@ -31,7 +30,7 @@ int main(int argc, char** argv)
 {
   G4bool bSaveKinematics = 1; // 0: Don't save kinemaitcs, 1: Save
   G4double kinEnergy = 70; // MeV unit
-  G4double rotationDeg = 0.;
+  G4double rotationDeg = 30.;
 
   G4int ranSeed = strtod(argv[1], NULL);
   long seed = time(0)*gethostid() * ranSeed;
@@ -42,7 +41,6 @@ int main(int argc, char** argv)
 
   G4RunManager* runManager = new G4RunManager;
   runManager -> SetUserInitialization( new DetectorConstruction( rotationDeg ) );
-  //runManager -> SetUserInitialization(new MyPhysicsList());
   //runManager -> SetUserInitialization(new FTFP_INCLXX());
   runManager -> SetUserInitialization(new FTFP_BERT());
   runManager -> SetUserAction(new RunAction(fileNumber, bSaveKinematics));
