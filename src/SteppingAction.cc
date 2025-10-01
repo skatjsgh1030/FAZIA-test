@@ -167,9 +167,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   //if( !eventAction->GetGoldTarget() ) // 만약 gold target event 가 아닌 것들만 저장하고 싶다면
   {
     // =====각 트랙이 각 검출기에서 잃은 에너지 누적 추가=====
-    // 더 명확한 변수명
-    G4int    current_track_id    = step->GetTrack()->GetTrackID();
-    G4int    current_pdg_code    = pdg; // 위에서 얻은 pdg 재사용
     G4double energy_deposit_step = edep;
 
     // 스텝 시작점에서 현재 물리/논리 볼륨 얻기
