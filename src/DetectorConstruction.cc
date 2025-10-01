@@ -65,6 +65,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   detVisAtt->SetForceSolid(true);
   logicTarget->SetVisAttributes(detVisAtt);
 
+    // ========================= Collimator ========================
+  G4Material* Pb = nist->FindOrBuildMaterial("G4_Pb");
+  G4double inner_r = 0.15* cm;
+  G4double outer_r = 3.* cm;
+  G4double collimator_thickness = 4.* cm;
+
+  auto* solidCollimator = new G4Tubs("solidCollimator", inner_r, outer_r, collimator_thickness/2.,0.*deg, 360.*deg);
+  auto* logicCollimator = new G4LogicalVolume(solidCollimator, Pb, "logicCollimator");
+  (void) new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,-3.*cm), logicCollimator, "physCollimator", logicWorld, false, 2, true); // Copy number of 2 for Collimator
+
   // ========================= Materials / Sizes ========================
   G4double SiSize       = 2.*cm;
   G4double gapThickness = 2.*mm;
