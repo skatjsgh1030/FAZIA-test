@@ -6,8 +6,8 @@ project(PROJECT_neuSIM4)
 set(useROOT false)
 set(neuSIM4_SOURCE_DIRECTORIES src)
 set(neuSIM4_HEADER_DIRECTORIES include)
-set(neuSIM4_EXECUTABLES example)
-set(neuSIM4_SCRIPTS run.mac vis.mac)
+set(neuSIM4_EXECUTABLES example_1)
+set(neuSIM4_SCRIPTS run.mac vis_1.mac)
 
 #----------------------------------------------------------------------------
 

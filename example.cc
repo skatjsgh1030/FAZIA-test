@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 
   G4int ranSeed = strtod(argv[1], NULL);
   long seed = time(0)*gethostid() * ranSeed;
-  CLHEP::HepRandom::setTheSeed( seed );
+  //CLHEP::HepRandom::setTheSeed( seed );
 
   G4String fileNumber = argv[1];
 
