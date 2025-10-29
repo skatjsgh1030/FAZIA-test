@@ -31,9 +31,16 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     virtual G4VPhysicalVolume* Construct();
 
   private:
+    G4LogicalVolume *logicWorld;
     G4LogicalVolume *logicDetector;
 
     G4double fRotDeg = 0;
+
+    G4NistManager* nist = nullptr;
+
+    void SetUpTarget();
+    void SetUpCollimator();
+    void SetUpDetector();
     	
 };
 

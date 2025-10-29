@@ -43,15 +43,27 @@ DetectorConstruction::~DetectorConstruction() {}
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-  auto* nist = G4NistManager::Instance();
+  nist = G4NistManager::Instance();
 
   // ========================= World =========================
   //G4Material* worldMat = nist->FindOrBuildMaterial("G4_Galactic");
   G4Material* worldMat = nist->FindOrBuildMaterial("G4_AIR");
   auto* solidWorld = new G4Box("solidWorld", 3*m, 3*m, 3*m);
-  auto* logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
+  logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
   auto* physWorld  = new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,0.), logicWorld, "phyWorld", nullptr, false, 0, true); // Copy number of 0 for World
 
+  SetUpTarget();
+  SetUpCollimator();
+  SetUpDetector();
+
+
+
+  return physWorld;
+}
+
+
+void DetectorConstruction::SetUpTarget()
+{
   // ========================= Target ========================
   G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
   G4double target_size = 0.02*m;
@@ -64,8 +76,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   auto* detVisAtt = new G4VisAttributes(G4Color(1.0, 1.0, 0.0, 0.5));
   detVisAtt->SetForceSolid(true);
   logicTarget->SetVisAttributes(detVisAtt);
+}
 
-    // ========================= Collimator ========================
+void DetectorConstruction::SetUpCollimator()
+{
+  // ========================= Collimator ========================
   G4Material* Pb = nist->FindOrBuildMaterial("G4_Pb");
   G4double inner_r = 0.15* cm;
   G4double outer_r = 3.* cm;
@@ -74,7 +89,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   auto* solidCollimator = new G4Tubs("solidCollimator", inner_r, outer_r, collimator_thickness/2.,0.*deg, 360.*deg);
   auto* logicCollimator = new G4LogicalVolume(solidCollimator, Pb, "logicCollimator");
   (void) new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,-3.*cm), logicCollimator, "physCollimator", logicWorld, false, 2, true); // Copy number of 2 for Collimator
+}
 
+void DetectorConstruction::SetUpDetector()
+{
   // ========================= Materials / Sizes ========================
   G4double SiSize       = 2.*cm;
   G4double gapThickness = 2.*mm;
@@ -248,14 +266,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   rotBlock.rotateY(fRotDeg*deg);
 
   G4ThreeVector blockCenter( 1.*m * std::sin(fRotDeg*deg),
-                             0.,
-                             1.*m * std::cos(fRotDeg*deg) );
+      0.,
+      1.*m * std::cos(fRotDeg*deg) );
   const G4int  baseCopyNoBlock = 1000;  
   const G4bool checkOverlap    = true;
 
   G4Transform3D trBlock(rotBlock, blockCenter);
   assemblyBlock->MakeImprint(logicWorld, trBlock, baseCopyNoBlock, checkOverlap);
-
-  return physWorld;
 }
-
