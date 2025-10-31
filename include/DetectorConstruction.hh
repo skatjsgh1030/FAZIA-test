@@ -14,8 +14,9 @@
 #include "G4Transform3D.hh"        // 위치/회전을 하나의 변환으로 묶는 클래스
 #include "G4RotationMatrix.hh"     // 회전 행렬
 
-#include "SetUpTarget.hh"
 #include "SetUpCollimator.hh"
+#include "SetUpTarget.hh"
+#include "SetUpDump.hh"
 #include "SetUpDetector.hh"
 
 
@@ -23,8 +24,10 @@ using namespace CLHEP;
 
 class G4VPhysicalVolume;
 class G4LogicalVolume;
-class SetUpTarget;
+
 class SetUpCollimator;
+class SetUpTarget;
+class SetUpDump;
 class SetUpDetector;
 
 class DetectorConstruction : public G4VUserDetectorConstruction

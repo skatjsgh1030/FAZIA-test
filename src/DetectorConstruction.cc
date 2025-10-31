@@ -58,16 +58,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	logicWorld -> SetVisAttributes(G4VisAttributes::GetInvisible());
 
-	SetUpTarget targ;
 	SetUpCollimator coll_1;
+	SetUpTarget targ;
+	SetUpDump dump;
 	SetUpDetector dete;
 	// 회전각 전달
 	dete.SetRotationDeg(fRotDeg);
 
-    fprintf(stderr, "[DetectorConstruction] Call SetUpTarget\n");
-	if(1){targ.SetUpTargetGeo(logicWorld);} 
     fprintf(stderr, "[DetectorConstruction] Call SetUpCollimator\n");
 	if(0){coll_1.SetUpCollimatorGeo(logicWorld);} 
+    fprintf(stderr, "[DetectorConstruction] Call SetUpTarget\n");
+	if(1){targ.SetUpTargetGeo(logicWorld);} 
+    fprintf(stderr, "[DetectorConstruction] Call SetUpDump\n");
+	if(1){dump.SetUpDumpGeo(logicWorld);} 
     fprintf(stderr, "[DetectorConstruction] Call SetUpDetector\n");
 	if(1){dete.SetUpDetectorGeo(logicWorld);} 
 

@@ -52,7 +52,7 @@ int main(int argc, char** argv)
   auto* runManager = new G4RunManager;
   G4bool bSaveKinematics = true;
   G4double kinEnergy = 70.*CLHEP::MeV;
-  G4double rotationDeg = 15.;
+  G4double rotationDeg = 45.;
 
   G4String deg = G4UIcommand::ConvertToString((int)rotationDeg);
 
