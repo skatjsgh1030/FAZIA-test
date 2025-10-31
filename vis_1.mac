@@ -43,8 +43,8 @@
 /vis/viewer/update
 
 # (필요 시) 확대/타깃 지정
-///vis/viewer/set/targetPoint 0 0 1200 cm
-///vis/viewer/zoom 8
+#/vis/viewer/set/targetPoint 0 0 1200 cm
+#/vis/viewer/zoom 8
 
 # 컷(네 설정 유지)
 /run/setCutForAGivenParticle e- 1 m

@@ -10,7 +10,7 @@
 class RunAction : public G4UserRunAction
 {
   public:
-    RunAction( G4String fileN, G4bool bSaveKinematics );
+    RunAction( G4String fileN, G4String deteDegree ,G4bool bSaveKinematics );
     virtual ~RunAction();
 
     // method from the base class

@@ -37,11 +37,17 @@ using namespace CLHEP;
 SetUpDetector::SetUpDetector(){}
 SetUpDetector::~SetUpDetector(){}
 
+void SetUpDetector::SetRotationDeg(G4double rotDeg)
+{
+  fRotDeg = rotDeg;
+}
+
 void SetUpDetector::SetUpDetectorGeo(G4LogicalVolume* logicWorld)
 {
   nist = G4NistManager::Instance();
   fprintf(stderr, "[SetUpDetector] Start, nist=%p\n", (void*)nist);
-  // ========================= Materials / Sizes ========================
+  
+	// ========================= Materials / Sizes ========================
   G4double SiSize       = 2.*cm;
   G4double gapThickness = 2.*mm;
   G4double alThickness  = 1.*um;

@@ -17,6 +17,7 @@ class SetUpDetector
       virtual ~SetUpDetector();
 
       void SetUpDetectorGeo(G4LogicalVolume* logicWorld);
+      void SetRotationDeg(G4double rotDeg);
 		
 		private:
 			G4NistManager* nist = nullptr;

@@ -61,11 +61,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	SetUpTarget targ;
 	SetUpCollimator coll_1;
 	SetUpDetector dete;
+	// 회전각 전달
+	dete.SetRotationDeg(fRotDeg);
 
     fprintf(stderr, "[DetectorConstruction] Call SetUpTarget\n");
 	if(1){targ.SetUpTargetGeo(logicWorld);} 
     fprintf(stderr, "[DetectorConstruction] Call SetUpCollimator\n");
-	if(1){coll_1.SetUpCollimatorGeo(logicWorld);} 
+	if(0){coll_1.SetUpCollimatorGeo(logicWorld);} 
     fprintf(stderr, "[DetectorConstruction] Call SetUpDetector\n");
 	if(1){dete.SetUpDetectorGeo(logicWorld);} 
 

@@ -6,13 +6,17 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
-RunAction::RunAction( G4String fileN, G4bool bSaveKinematics )
+#include <filesystem>
+namespace fs = std::filesystem;
+
+RunAction::RunAction( G4String fileN, G4String deteDegree ,G4bool bSaveKinematics )
   :G4UserRunAction()
 {
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // Open an output file
-  G4String fileName = "output_" + fileN + ".root";
+  fs::create_directories("../outputFiles");
+	G4String fileName = "../outputFiles/output_" + fileN +"_"+ deteDegree +"degree.root";
   analysisManager->OpenFile(fileName);
 
   analysisManager->SetVerboseLevel(1);

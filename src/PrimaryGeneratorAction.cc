@@ -35,7 +35,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) 
 {
  
-  const G4double beam_sigma = 0.25*cm;
+  const G4double beam_sigma = 0.167*cm;
   G4double x_pos = G4RandGauss::shoot(0.0, beam_sigma);
   G4double y_pos = G4RandGauss::shoot(0.0, beam_sigma);
   G4double z_pos = 0.0;  // z=0 평면에서 사출      

@@ -25,7 +25,8 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
   // 필요 시 이벤트 시작 시점 초기화 로직 추가 가능 (현재는 비움)
   // 매 이벤트 시작 때 마다 gold target event를 initialize 해준다.
   isGoldTarget = false;
-
+  auto id = evt->GetEventID();
+  if (id % 100000 == 0) G4cout << "Event process : " << (id/(double)10000000)*100<<" %" << G4endl;
   for( G4int i=0; i<16; i++ )
   {
     edepSi1[i] = 0;

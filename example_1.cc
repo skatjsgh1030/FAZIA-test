@@ -52,11 +52,13 @@ int main(int argc, char** argv)
   auto* runManager = new G4RunManager;
   G4bool bSaveKinematics = true;
   G4double kinEnergy = 70.*CLHEP::MeV;
-  G4double rotationDeg = 30.;
+  G4double rotationDeg = 15.;
+
+  G4String deg = G4UIcommand::ConvertToString((int)rotationDeg);
 
   runManager->SetUserInitialization(new DetectorConstruction(rotationDeg));
   runManager->SetUserInitialization(new FTFP_BERT());
-  runManager->SetUserAction(new RunAction(fileNumber, bSaveKinematics));
+  runManager->SetUserAction(new RunAction(fileNumber, deg,bSaveKinematics));
   runManager->SetUserAction(new PrimaryGeneratorAction(kinEnergy));
   runManager->SetUserAction(new EventAction());
   runManager->SetUserAction(new SteppingAction(bSaveKinematics));
