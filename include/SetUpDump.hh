@@ -16,6 +16,10 @@ class SetUpDump
       virtual ~SetUpDump();
 
       void SetUpDumpGeo(G4LogicalVolume* logicWorld);
+      void SetRotationDeg(G4double rotDeg);
+		
+		private:
+			G4double fRotDeg = 0;
 };
 
 #endif

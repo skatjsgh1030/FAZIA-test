@@ -63,6 +63,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	SetUpDump dump;
 	SetUpDetector dete;
 	// 회전각 전달
+	dump.SetRotationDeg(fRotDeg);
 	dete.SetRotationDeg(fRotDeg);
 
     fprintf(stderr, "[DetectorConstruction] Call SetUpCollimator\n");

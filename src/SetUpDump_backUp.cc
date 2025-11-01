@@ -13,7 +13,7 @@
 #include "G4SubtractionSolid.hh"
 #include "G4UnionSolid.hh"
 #include "G4Sphere.hh"
-#include "G4Tubs.hh"
+//#include "G4Tubs.hh"
 
 #include "G4Element.hh"
 #include "G4Material.hh"
@@ -37,43 +37,22 @@ using namespace std;
 SetUpDump::SetUpDump(){}
 SetUpDump::~SetUpDump(){}
 
-void SetUpDump::SetRotationDeg(G4double rotDeg)
-{
-  fRotDeg = rotDeg;
-}
-
 void SetUpDump::SetUpDumpGeo(G4LogicalVolume* logicWorld)
 {
   // ========================= Dump ========================
   auto* nist = G4NistManager::Instance();
-  G4Material* Pb = nist->FindOrBuildMaterial("G4_Pb");
-  G4double outer_radius = 0.08*m;
-  G4double inner_radius = 0.06*m;
+  G4Material* Au = nist->FindOrBuildMaterial("G4_Pb");
+  G4double outer_radius = 0.06*m;
+  G4double inner_radius = 0.04*m;
 
 	G4VisAttributes* SetUpDumpVisAtt;
   
-	// 반구 생성
 	auto* solidDump = new G4Sphere("solidDump", inner_radius, outer_radius, 0.*deg, 360.*deg, 0.*deg, 90.*deg);
-	
-	// Z축 방향 원기둥 구멍 생성 (외경 3cm, 높이 3cm)
-	G4double hole_radius = 0.015*m;  // 외경 3cm = 반지름 1.5cm
-	G4double hole_height = 0.03*m;    // 높이 3cm
-	auto* solidHole = new G4Tubs("solidHole", 0., hole_radius, hole_height/2., 0.*deg, 360.*deg);
-	
-	// 반구에서 구멍을 뺌 (fRotDeg 각도만큼 theta 방향(y축 기준)으로 회전)
-	// 회전 행렬: y축 기준으로 fRotDeg 회전 (theta 방향)
-	G4RotationMatrix* holeRot = new G4RotationMatrix();
-	holeRot->rotateY((-1.*fRotDeg)*deg);
-	
-	// 구멍의 위치: 반구 중심에서 fRotDeg 방향으로 7cm
-	G4ThreeVector holePos(7.*std::sin(fRotDeg*deg)*std::cos(0.*deg)*cm, 7.*std::sin(fRotDeg*deg)*std::sin(0.*deg)*cm, 7.*std::cos(fRotDeg*deg)*cm);
-	auto* solidDumpWithHole = new G4SubtractionSolid("solidDumpWithHole", solidDump, solidHole, holeRot, holePos);
-	
-  auto* logicDump = new G4LogicalVolume(solidDumpWithHole, Pb, "logicDump");
+  auto* logicDump = new G4LogicalVolume(solidDump, Au, "logicDump");
   (void) new G4PVPlacement( nullptr, G4ThreeVector(0.,0.,0.*cm), logicDump, "physDump", logicWorld, false, 99, true); // Copy number of 1 for Dump
 
   auto* detVisAtt = new G4VisAttributes(G4Color(1.0, 1.0, 0.0, 0.5));
-  detVisAtt->SetForceSolid(false);
+  detVisAtt->SetForceSolid(true);
   
 	logicDump->SetVisAttributes(detVisAtt);
 
